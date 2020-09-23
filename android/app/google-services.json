@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "689244354932",
+    "firebase_url": "https://socail-86f56.firebaseio.com",
+    "project_id": "socail-86f56",
+    "storage_bucket": "socail-86f56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689244354932:android:7042ab3ae56564fc421421",
+        "android_client_info": {
+          "package_name": "com.demo_navigation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689244354932-60a2lvlhta64qtqr3g751v7h0uhvd314.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8ifrK332J0Iyati01yRQ3m9A_tN74shQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "689244354932-60a2lvlhta64qtqr3g751v7h0uhvd314.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

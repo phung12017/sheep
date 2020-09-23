@@ -1,0 +1,121 @@
+import React, {Component} from 'react';
+import {Text, View, StyleSheet, FlatList, Image} from 'react-native';
+import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
+import Color from '../assets/Color';
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
+export default class UploadName extends Component {
+  state = {
+    uid: this.props.route.params.uid,
+    displayName: '',
+    user: [],
+    friends: [],
+    chatList: [],
+  };
+
+  componentDidMount() {
+    this.getFriends(this.state.uid);
+  }
+
+  getFriends = async uid => {
+    let ref = database()
+      .ref('users')
+      .orderByChild('friends/' + uid + '/f_id')
+      .equalTo(uid);
+    await ref.on('value', snapshot => {
+      let items = [];
+      //console.log(snapshot,"->");
+      snapshot.forEach(child => {
+        let item = {
+          name: child.val().name,
+          photoURL: child.val().photoURL,
+        };
+        items.push(item);
+      });
+
+      this.setState({friends: items});
+    });
+  };
+
+  updateName = async (uid, n) => {
+    if (n === '') {
+      alert('Please fill again');
+    } else {
+      await database()
+        .ref('users')
+        .child(uid)
+        .update({name: n})
+        .then(() => this.props.navigation.navigate('Login'));
+    }
+  };
+
+  renderItem(item) {
+    return (
+      <View style={{flexDirection: 'row', padding: 8}}>
+        <Image
+          source={{uri: item.photoURL}}
+          style={{width: 50, height: 50, marginRight: 8}}
+        />
+        <View>
+          <Text>id: {item.uid}</Text>
+          <Text>{item.name}</Text>
+        </View>
+      </View>
+    );
+  }
+  render() {
+    const {uid, displayName} = this.state;
+
+    return (
+      <View>
+        <Text>Profile {uid}</Text>
+        <Text>Enter your name</Text>
+        <TextInput
+          autoFocus
+          style={styles.input}
+          value={displayName}
+          onChangeText={displayName =>
+            this.setState({displayName: displayName})
+          }
+        />
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => this.updateName(uid, displayName)}>
+          <Text style={styles.textButton}>Submit</Text>
+        </TouchableOpacity>
+
+        <FlatList
+          style={{padding: 10}}
+          showsHorizontalScrollIndicator={false}
+          horizontal={false}
+          data={this.state.friends}
+          renderItem={({item}) => this.renderItem(item)}
+          keyExtractor={item => item.id}
+        />
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  input: {
+    borderBottomWidth: 3,
+  },
+  button: {
+    backgroundColor: Color.primary,
+    padding: 15,
+    alignItems: 'center',
+    marginVertical: 32,
+  },
+  buttonDisable: {
+    backgroundColor: Color.primary,
+    padding: 15,
+    alignItems: 'center',
+    marginVertical: 32,
+    opacity: 0.5,
+  },
+  textButton: {
+    color: Color.white,
+  },
+});
